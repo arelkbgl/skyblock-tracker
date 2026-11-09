@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<!--
+    Price history chart for one item.
+    Served by server.js at /chart?item=<id>; data comes from /history.
+-->
+<html>
+    <head>
+        <title>Price History</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    </head>
+    <body>
+        <h1 id="item-name">Price History</h1>
+        <canvas id="chart"></canvas>
+
+        <script>
+            const params = new URLSearchParams(window.location.search);
+            const item = params.get("item");
+
+            async function loadChart() {
+                const response = await fetch("/history?item=" + item);
+                const history = await response.json();
+
+                const itemName = document.getElementById("item-name");
+                itemName.textContent = "Price History of " + item;
+
+                // Chart.js expects the labels and each line's values as separate arrays.
+                const times = [];
+                const buyPrices = [];
+                const sellPrices = [];
+
+                for (const entry of history) {
+                    const date = new Date(entry.time);
+                    const label = date.toLocaleString([], {day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit"});
+
+                    times.push(label);
+                    buyPrices.push(entry.buy);
+                    sellPrices.push(entry.sell);
+                }
+
+                new Chart(document.getElementById("chart"), {
+                    type: "line",
+                    data: {
+                        labels: times,
+                        datasets: [
+                            { label: "Buy", data: buyPrices },
+                            { label: "Sell", data: sellPrices }
+                        ]
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                // Hundreds of points would otherwise produce crowded, rotated labels.
+                                ticks: { maxTicksLimit: 10, maxRotation: 0 }
+                            }
+                        }
+                    }
+                });
+            }
+
+            loadChart();
+        </script>
+    </body>
+</html>
