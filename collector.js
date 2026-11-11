@@ -22,11 +22,15 @@ async function collect() {
         let count = 0;
 
         for (const itemId of items) {
-            const status = data.products[itemId].quick_status;
+            const product = data.products[itemId];
+
+            // Top order, not quick_status: its average can be skewed by a few cheap orders.
+            const buyPrice = product.buy_summary.length > 0 ? product.buy_summary[0].pricePerUnit : 0;
+            const sellPrice = product.sell_summary.length > 0 ? product.sell_summary[0].pricePerUnit : 0;
 
             // A price of 0 means one side of the order book is empty.
-            if (status.buyPrice !== 0 && status.sellPrice !== 0) {
-                insert.run(time, itemId, status.buyPrice, status.sellPrice);
+            if (buyPrice !== 0 && sellPrice !== 0) {
+                insert.run(time, itemId, buyPrice, sellPrice);
                 count++;
             }
         }

@@ -227,8 +227,9 @@
                 const items = Object.keys(data.products);
 
                 for (const itemId of items) {
-                    const status = data.products[itemId].quick_status;
                     const product = data.products[itemId];
+                    const status = product.quick_status;
+                    
                     // Top order, not quick_status: its average can be skewed by a few cheap orders.
                     const buyPrice = product.buy_summary.length > 0 ? product.buy_summary[0].pricePerUnit : 0;
                     const sellPrice = product.sell_summary.length > 0 ? product.sell_summary[0].pricePerUnit : 0;

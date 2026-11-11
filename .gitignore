@@ -1,2 +1,2 @@
-prices.db
+*.db
 node_modules/
