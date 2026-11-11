@@ -4,32 +4,127 @@
     Served by server.js at "/". Item names link to /chart?item=<id>.
 -->
 <html>
+    <meta charset="UTF-8">
     <head>
         <title>Bazaar Tracker</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
         <style>
+            /* Main colours: navy, alabaster, grey. Green and brown are only small accents. */
+            :root {
+                --bg: #052F5F;
+                --header-bg: #7C7C7C;
+                --header-text: #ffffff;
+                --text: #E7E7E7;
+                --muted: #7C7C7C;
+                /* Grey at 35% so row lines stay subtle. */
+                --border: rgba(124, 124, 124, 0.35);
+                --hover: rgba(231, 231, 231, 0.08);
+                --accent: #E7E7E7;
+                --side-green: #053B06;
+                --side-brown: #4C230A;
+                --profit: #05F140;
+                --loss: #F40000;
+            }
+
+            @media (prefers-color-scheme: light) {
+                :root {
+                    --bg: #E7E7E7;
+                    --header-bg: #5c5c5c;
+                    --text: #052F5F;
+                    /* Darker than #7C7C7C so muted text stays readable on alabaster. */
+                    --muted: #5c5c5c;
+                    --hover: #ffffff;
+                    --accent: #053B06;
+                    /* Electric green is unreadable on light backgrounds. */
+                    --profit: #048a2a;
+                }
+            }
+
+            html {
+                font-size: 150%;
+            }
+
+            /* Full-height column layout: the table area fills what's left and scrolls on its own. */
             body {
-                font-family: sans-serif;
-                background-color: #1e1e1e;
-                color: white;
+                font-family: "Inter", sans-serif;
+                background-color: var(--bg);
+                color: var(--text);
+                margin: 0;
                 padding: 20px;
+                height: 100vh;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+            }
+
+            h1 {
+                margin: 0 0 16px;
+            }
+
+            #search {
+                font: inherit;
+                color: var(--text);
+                background-color: var(--hover);
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                padding: 8px 12px;
+                width: 100%;
+                max-width: 320px;
+                box-sizing: border-box;
+                margin-bottom: 16px;
+            }
+
+            #search::placeholder {
+                color: var(--muted);
+            }
+
+            #search:focus {
+                outline: none;
+                border-color: var(--accent);
+            }
+
+            /* Scrolls in both directions, so narrow windows don't push the table off-screen.
+               Side padding leaves room for the scaled hover row without a scrollbar. */
+            .table-wrap {
+                flex: 1;
+                min-height: 0;
+                overflow: auto;
+                scrollbar-width: thin;
+                scrollbar-color: var(--muted) transparent;
             }
 
             table {
                 border-collapse: collapse;
-            }
-
-            thead {
-                background-color: rgb(100, 23, 13);
+                width: 100%;
             }
 
             th, td {
-                padding: 6px 12px;
-                border-bottom: 1px solid #444;
+                padding: 8px 12px;
+                border-bottom: 1px solid var(--border);
                 text-align: right;
+                white-space: nowrap;
             }
 
+            /* Equal-width digits so numbers line up in their columns. */
+            td {
+                font-variant-numeric: tabular-nums;
+            }
+
+            /* Sticky cells need their own background, or scrolled rows show through. */
             th {
+                background-color: var(--header-bg);
+                color: var(--text);
+                font-size: 0.8rem;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                border-bottom: 2px solid var(--header-text);
                 cursor: pointer;
+                position: sticky;
+                top: 0;
             }
 
             /* Item names are text, so align them left; all other columns are numbers. */
@@ -37,15 +132,38 @@
                 text-align: left;
             }
 
+            th.sort-desc::after {
+                content: " ▼";
+            }
+
+            th.sort-asc::after {
+                content: " ▲";
+            }
+
+            tbody tr:hover {
+                background-color: var(--hover);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+                transform: translateY(-2px);
+            }
+
+            tbody tr {
+                transition: transform 0.15s ease, background-color 0.15s ease;
+            }
+
             a {
-                color: rgb(225, 236, 107);
+                color: var(--accent);
                 text-decoration: none;
+            }
+
+            a:hover {
+                text-decoration: underline;
             }
         </style>
     </head>
     <body>
         <h1>Bazaar Tracker</h1>
         <input id="search" type="text" placeholder="Search item...">
+        <div class="table-wrap">
         <table>
             <thead>
                 <tr>
@@ -60,10 +178,12 @@
             </thead>
             <tbody id="item-table"></tbody>
         </table>
+        </div>
 
         <script>
             const rows = [];
             const searchInput = document.getElementById("search");
+            const headers = document.querySelectorAll("th");
 
             let sortKey = "marginPercent";
             let sortDescending = true;
@@ -122,6 +242,19 @@
                     }
                 }
 
+                // Moves the sort arrow to the active column; runs on load too, so the default sort shows one.
+                for (const th of headers) {
+                    th.classList.remove("sort-desc");
+                    th.classList.remove("sort-asc");
+                    if (th.dataset.key === sortKey) {
+                        if (sortDescending) {
+                            th.classList.add("sort-desc");
+                        } else {
+                            th.classList.add("sort-asc");
+                        }
+                    }
+                }
+
                 if (sortKey === "name") {
                     // For names, "descending" means A→Z so the first click sorts alphabetically.
                     if (sortDescending) {
@@ -147,11 +280,11 @@
                     td.append(link);
                     tr.append(td);
 
-                    addCell(tr, row.buyPrice.toFixed(1));
-                    addCell(tr, row.sellPrice.toFixed(1));
-                    addCell(tr, row.margin.toFixed(1));
-                    addCell(tr, row.marginPercent.toFixed(1) + "%");
-                    addCell(tr, row.weeklyVolume.toLocaleString());
+                    addCell(tr, shortNumber(row.buyPrice));
+                    addCell(tr, shortNumber(row.sellPrice));
+                    addCell(tr, shortNumber(row.margin));
+                    addCell(tr, row.marginPercent.toLocaleString("en-US", { maximumFractionDigits: 0 }) + "%");
+                    addCell(tr, shortNumber(row.weeklyVolume));
 
                     tableBody.append(tr);
                 }
@@ -170,12 +303,20 @@
                 return fixed.join(" ");
             }
 
-            searchInput.addEventListener("input", () => {
-                renderTable(searchInput.value);
-            });
+            // 2448449 → "2.4M". Display only; rows keep raw numbers so sorting stays correct.
+            function shortNumber(n) {
+                if (n >= 1_000_000_000) {
+                    return (n / 1_000_000_000).toFixed(1) + "B";
+                } else if (n >= 1_000_000) {
+                    return (n / 1_000_000).toFixed(1) + "M";
+                } else if (n >= 1_000) {
+                    return (n / 1_000).toFixed(1) + "k";
+                } else {
+                    return n.toFixed(1);
+                }
+            }
 
             // Clicking the active column flips the direction; a new column starts descending.
-            const headers = document.querySelectorAll("th");
             for (const th of headers) {
                 th.addEventListener("click", () => {
                     if (th.dataset.key === sortKey) {
@@ -187,6 +328,10 @@
                     renderTable(searchInput.value);
                 });
             }
+
+            searchInput.addEventListener("input", () => {
+                renderTable(searchInput.value);
+            });
 
             loadBazaar();
         </script>
