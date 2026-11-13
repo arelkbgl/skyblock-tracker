@@ -1,7 +1,8 @@
 // HTTP server for the Bazaar Tracker.
 //
 // Routes:
-//   GET /                    Bazaar table (bazaartracker.html)
+//   GET /                    Dashboard (dashboard.html)
+//   GET /items               Item Overview (items.html)
 //   GET /chart?item=<id>     Price chart page (chart.html)
 //   GET /history?item=<id>   Price history of one item as JSON: [{ time, buy, sell }]
 //
@@ -21,7 +22,7 @@ const server = http.createServer((request, response) => {
     const url = new URL(request.url, "http://localhost");
 
     if (url.pathname === "/") {
-        const html = fs.readFileSync("bazaartracker.html");
+        const html = fs.readFileSync("dashboard.html");
         response.writeHead(200, { "Content-Type": "text/html" });
         response.end(html);
 
@@ -34,6 +35,11 @@ const server = http.createServer((request, response) => {
 
     } else if (url.pathname === "/chart") {
         const html = fs.readFileSync("chart.html");
+        response.writeHead(200, { "Content-Type": "text/html" });
+        response.end(html);
+    
+    } else if (url.pathname === "/items") {
+        const html = fs.readFileSync("items.html");
         response.writeHead(200, { "Content-Type": "text/html" });
         response.end(html);
 

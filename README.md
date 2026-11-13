@@ -4,7 +4,8 @@ A web app for tracking the Hypixel SkyBlock Bazaar. It shows live prices with fl
 
 ## Features
 
-- **Live Bazaar table:** buy and sell prices, margin, margin %, and weekly trade volume for every active item
+- **Dashboard:** the start page, with top-5 overviews (work in progress)
+- **Item overview:** buy and sell prices, margin, margin %, and weekly trade volume for every active item
 - **Search:** filter items by name. Upper/lower case and spaces don't matter.
 - **Sorting:** click any column header to sort, and click again to reverse
 - **Volume filter:** hides items that barely trade, where a big margin would never actually fill
@@ -17,7 +18,7 @@ The project has three parts:
 
 - **`collector.js`:** polls the Hypixel Bazaar API every 5 minutes and stores the prices in a SQLite database (`prices.db`).
 - **`server.js`:** a Node.js HTTP server that serves the pages and a small JSON API (`/history?item=<id>`) that reads from the database.
-- **`bazaartracker.html` / `chart.html`:** the frontend. The table loads live data from the Hypixel API, and the chart page loads saved history from the server and draws it with Chart.js.
+- **`dashboard.html` / `items.html` / `chart.html`:** the frontend. The dashboard (`/`) shows top-5 overviews, the item overview (`/items`) is the full table with live data from the Hypixel API, and the chart page loads saved history from the server and draws it with Chart.js.
 
 ## Getting started
 
