@@ -4,8 +4,105 @@
         <meta charset="UTF-8">
         <title>Bazaar Tracker</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+        <style>
+            :root {
+                --bg: #2b2a2a;
+                --header-bg: #166ccf;
+                --header-text: #ffffff;
+                --text: #E7E7E7;
+                --muted: #7C7C7C;
+                /* Grey at 35% so row lines stay subtle. */
+                --border: rgba(124, 124, 124, 0.35);
+                --hover: rgba(231, 231, 231, 0.08);
+                --accent: #E7E7E7;
+                --side-green: #053B06;
+                --side-brown: #4C230A;
+                --profit: #05F140;
+                --loss: #F40000;
+            }
+
+            @media (prefers-color-scheme: light) {
+                :root {
+                    --bg: #E7E7E7;
+                    --header-bg: #5c5c5c;
+                    --text: #052F5F;
+                    /* Darker than #7C7C7C so muted text stays readable on alabaster. */
+                    --muted: #5c5c5c;
+                    --hover: #ffffff;
+                    --accent: #053B06;
+                    /* Electric green is unreadable on light backgrounds. */
+                    --profit: #048a2a;
+                }
+            }
+
+            body {
+                font-family: "Inter", sans-serif;
+                background-color: var(--bg);
+                color: var(--text);
+            }
+
+            h1 {
+                text-align: center;
+                font-size: 64px;
+            }
+
+            h2 {
+                width: fit-content;
+                margin-left: auto;
+                margin-right: auto;
+                color: var(--text);
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                padding: 8px 12px;
+                background-color: var(--header-bg);
+            }
+
+            .cards {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 16px;
+            }
+
+            .card {
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                padding: 8px 12px;
+                background-color: var(--header-bg);
+            }
+
+            a {
+                color: var(--text);
+                text-decoration: none;
+            }
+
+            a:hover {
+                text-decoration: underline;
+                color: var(--bg);
+            }
+        </style>
     </head>
     <body>
         <h1>Bazaar Tracker</h1>
+        <h2>Most Attractive Items</h2>
+        <main class="cards">
+            <section class="card">
+                <h3>Top Flips</h3>
+                <p>Coming Soon</p>
+                <a href="/items">See all →</a>
+            </section>
+            <section class="card">
+                <h3>Top Crafts</h3>
+                <p>Coming Soon</p>
+                <a href="/items">See all →</a>
+            </section>
+            <section class="card">
+                <h3>Best NPC Sells</h3>
+                <p>Coming Soon</p>
+                <a href="/items">See all →</a>
+            </section>
+        </main>
     </body>
 </html>
