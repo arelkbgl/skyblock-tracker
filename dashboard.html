@@ -7,57 +7,114 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300..700&display=swap" rel="stylesheet">
         <style>
             :root {
-                --bg: #2b2a2a;
-                --header-bg: #166ccf;
-                --header-text: #ffffff;
-                --text: #E7E7E7;
-                --muted: #7C7C7C;
-                /* Grey at 35% so row lines stay subtle. */
-                --border: rgba(124, 124, 124, 0.35);
-                --hover: rgba(231, 231, 231, 0.08);
-                --accent: #E7E7E7;
-                --side-green: #053B06;
-                --side-brown: #4C230A;
-                --profit: #05F140;
-                --loss: #F40000;
+                --bg-primary: #080B0A;
+                --bg-card: #050706;
+                --bg-secondary: #101513;
+
+                --accent-green: #39E75F;
+                --accent-emerald: #32E65B;
+                --accent-dark: #0D2415;
+
+                --text-primary: #F5F7F5;
+                --text-secondary: #A7B0AA;
+
+                --border-color: #252C28;
+
+                --coin-gold: #FFC83D;
+                --profit-green: #35E58C;
             }
 
-            @media (prefers-color-scheme: light) {
-                :root {
-                    --bg: #E7E7E7;
-                    --header-bg: #5c5c5c;
-                    --text: #052F5F;
-                    /* Darker than #7C7C7C so muted text stays readable on alabaster. */
-                    --muted: #5c5c5c;
-                    --hover: #ffffff;
-                    --accent: #053B06;
-                    /* Electric green is unreadable on light backgrounds. */
-                    --profit: #048a2a;
-                }
+            html {
+                font-size: 130%;
             }
 
             body {
                 font-family: "Inter", sans-serif;
-                background-color: var(--bg);
-                color: var(--text);
+                background-color: var(--bg-secondary);
+                color: var(--text-primary);
+                margin: 0;
             }
 
-            h1 {
-                text-align: center;
-                font-size: 64px;
+            .topbar {
+                position: sticky;
+                top: 0;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                border-bottom: 1px solid var(--border-color);
+                padding: 4px 12px;
+                background-color: var(--bg-primary);
+                font-family: "Montserrat", sans-serif;
+                font-weight: 500;
+                font-size: 0.8rem;
+                color: var(--text-secondary);
             }
 
-            h2 {
-                width: fit-content;
-                margin-left: auto;
-                margin-right: auto;
-                color: var(--text);
-                border: 1px solid var(--border);
-                border-radius: 6px;
-                padding: 8px 12px;
-                background-color: var(--header-bg);
+            .brand img {
+                height: 60px;
+                display: block;
+                margin-top: 8px;
+                margin-left: 12px;
+            }
+
+            nav {
+                display: flex;
+                gap: 80px;
+            }
+
+            nav a {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                border: 1px solid transparent;
+                padding: 12px 24px;
+                border-radius: 20px;
+                transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+            }   
+
+            nav img {
+                width: 20px;
+                height: 20px;
+            }
+
+            nav a:hover {
+                border: 1px solid var(--accent-emerald);
+                padding: 12px 24px;
+                border-radius: 20px;
+                background-color: var(--accent-dark);
+                text-decoration: none;
+                color: var(--text-primary);
+                transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+            }
+
+            .icon {
+                width: 20px;
+                height: 20px;
+                background-color: currentColor;
+                mask-size: contain;
+            }
+
+            .icon-bz {
+                mask-image: url("/images/bazaar.svg");
+            }
+
+            .icon-ah {
+                mask-image: url(/images/auction-house.svg);
+            }
+
+            .icon-flips {
+                mask-image: url(/images/flips.svg);
+            }
+
+            .icon-ana {
+                mask-image: url(/images/analytics.svg);
+            }
+
+            .icon-items {
+                mask-image: url(/images/items.svg);
             }
 
             .cards {
@@ -85,8 +142,34 @@
         </style>
     </head>
     <body>
-        <h1>Bazaar Tracker</h1>
-        <h2>Most Attractive Items</h2>
+        <header class="topbar">
+            <a href="/" class="brand">
+                <img src="/images/VLogo.png" alt="Vault home">
+            </a>
+            <nav>
+                <a href="#">
+                    <span class="icon icon-bz"></span>
+                    Bazaar
+                </a>
+                <a href="#">
+                    <span class="icon icon-ah"></span>
+                    Auction House
+                </a>
+                <a href="#">
+                    <span class="icon icon-flips"></span>
+                    Flips
+                </a>
+                <a href="#">
+                    <span class="icon icon-ana"></span>
+                    Analytics
+                </a>
+                <a href="/items">
+                    <span class="icon icon-items"></span>
+                    Items
+                </a>
+            </nav>
+            <a href="#">Discord</a>
+        </header>
         <main class="cards">
             <section class="card">
                 <h3>Top Flips</h3>
