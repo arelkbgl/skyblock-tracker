@@ -14,7 +14,7 @@
                 --bg-card: #050706;
                 --bg-secondary: #101513;
 
-                --accent-green: #39E75F;
+                --accent-green: #0d4210;
                 --accent-emerald: #32E65B;
                 --accent-dark: #0D2415;
 
@@ -87,6 +87,7 @@
                 background-color: var(--accent-dark);
                 text-decoration: none;
                 color: var(--text-primary);
+                box-shadow: 0 0 16px rgba(57, 231, 95, 0.5);
                 transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
             }
 
@@ -115,6 +116,80 @@
 
             .icon-items {
                 mask-image: url(/images/items.svg);
+            }
+
+            .hero {
+                display: flex;
+                flex-direction: column;   
+                align-items: center;      
+                gap: 24px;                
+                padding: 40px 0;          
+            }
+
+            .hero-logo {
+                width: 400px;
+                max-width: 90%;           
+            }
+
+            .search-box {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                width: 560px;
+                max-width: 90%;
+                padding: 0 0 0 14px;
+                overflow: hidden;
+                border: 1px solid var(--border-color);
+                border-radius: 10px;
+                background-color: var(--bg-primary);
+                box-shadow: 0 0 16px rgba(56, 59, 57, 0.5);
+                transition: border-color 0.2s ease;
+            }
+
+            .search-box:has(#search:focus) {
+                border-color: var(--accent-emerald);
+                box-shadow: 0 0 16px rgba(57, 231, 95, 0.5);
+            }
+
+            .search-box img {
+                width: 28px;
+                height: 28px;
+            }
+
+            #search {
+                flex: 1;
+                font: inherit;
+                color: var(--text-primary);
+                background: none;
+                border: none;
+                outline: none;
+                padding: 12px 0;
+            }
+
+            .search-button {
+                align-self: stretch;          
+                display: flex;
+                align-items: center;
+                padding: 0 18px;
+                border: none;
+                border-left: 1px solid var(--border-color);
+                background-color: var(--accent-dark);
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+            }
+
+            .search-button:hover {
+                background-color: var(--accent-green);
+            }
+
+            .search-button img {
+                width: 32px;
+                height: 32px;
+                transition: transform 0.2s ease;
+            }
+
+            .search-button:hover img {
+                transform: translateX(3px);
             }
 
             .cards {
@@ -170,6 +245,16 @@
             </nav>
             <a href="#">Discord</a>
         </header>
+        <section class ="hero">
+            <img class="hero-logo" src="/images/logoplaceholder.jpg" alt="">
+            <label class="search-box" for="search">
+                <img src="/images/search.svg" alt="">
+                <input id="search" type="text" placeholder="Search for an item...">
+                <button type="submit" class="search-button">
+                    <img src="/images/arrow-right.svg" alt="Search">
+                </button>
+            </label>
+        </section>
         <main class="cards">
             <section class="card">
                 <h3>Top Flips</h3>
