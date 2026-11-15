@@ -2,6 +2,7 @@
 //
 // Routes:
 //   GET /                    Dashboard (dashboard.html)
+//   GET /bazaar              Bazaar Overview (bazaar.html)
 //   GET /items               Item Overview (items.html)
 //   GET /images/<file>       Image files from the images/ folder
 //   GET /chart?item=<id>     Price chart page (chart.html)
@@ -50,6 +51,11 @@ const server = http.createServer((request, response) => {
     
     } else if (url.pathname === "/items") {
         const html = fs.readFileSync("items.html");
+        response.writeHead(200, { "Content-Type": "text/html" });
+        response.end(html);
+
+    } else if (url.pathname === "/bazaar") {
+        const html = fs.readFileSync("bazaar.html");
         response.writeHead(200, { "Content-Type": "text/html" });
         response.end(html);
 

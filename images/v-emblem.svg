@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 100" width="120" height="100">
+    <!-- Vault emblem: a green V with a centre prong. Light left arm, dark right arm for a bevelled look. -->
+    <defs>
+        <linearGradient id="arm-light" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#B9FFC7"/>
+            <stop offset="0.5" stop-color="#32E65B"/>
+            <stop offset="1" stop-color="#159A35"/>
+        </linearGradient>
+        <linearGradient id="arm-dark" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#32E65B"/>
+            <stop offset="1" stop-color="#0B5A1E"/>
+        </linearGradient>
+    </defs>
+
+    <g stroke="#03140A" stroke-width="2" stroke-linejoin="round">
+        <!-- Left arm -->
+        <polygon points="8,10 40,10 60,62 60,95 53,95" fill="url(#arm-light)"/>
+        <!-- Right arm -->
+        <polygon points="80,10 112,10 67,95 60,95 60,62" fill="url(#arm-dark)"/>
+        <!-- Centre prong between the arms -->
+        <polygon points="47,10 73,10 60,40" fill="url(#arm-light)"/>
+    </g>
+
+    <!-- Thin highlight along the top edge of the left arm -->
+    <path d="M10 11h29" stroke="#E9FFEE" stroke-width="1.5" stroke-linecap="round" opacity="0.8"/>
+</svg>

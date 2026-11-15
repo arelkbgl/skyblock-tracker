@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+    <meta charset="UTF-8">
+    <title>Bazaar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300..900&display=swap" rel="stylesheet">
+    <head>
+        <style>
+            :root {
+                --bg-primary: #080B0A;
+                --bg-card: #050706;
+                --bg-secondary: #101513;
+
+                --accent-green: #0d4210;
+                --accent-emerald: #32E65B;
+                --accent-dark: #0D2415;
+
+                --text-primary: #F5F7F5;
+                --text-secondary: #A7B0AA;
+
+                --border-color: #252C28;
+
+                --coin-gold: #FFC83D;
+                --profit-green: #35E58C;
+            }
+
+            html {
+                font-size: 130%;
+            }
+
+            body {
+                font-family: "Inter", sans-serif;
+                background-color: var(--bg-secondary);
+                color: var(--text-primary);
+                margin: 0;
+            }
+
+            .topbar {
+                position: sticky;
+                top: 0;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                border-bottom: 1px solid var(--border-color);
+                padding: 4px 12px;
+                background-color: var(--bg-primary);
+                font-family: "Montserrat", sans-serif;
+                font-weight: 500;
+                font-size: 0.8rem;
+                color: var(--text-secondary);
+            }
+
+            .brand img {
+                height: 60px;
+                display: block;
+                margin-top: 8px;
+                margin-left: 12px;
+            }
+
+            nav {
+                display: flex;
+                gap: 80px;
+            }
+
+            nav a {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                border: 1px solid transparent;
+                padding: 12px 24px;
+                border-radius: 20px;
+                transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+            }
+
+            nav img {
+                width: 20px;
+                height: 20px;
+            }
+
+            nav a:hover {
+                border: 1px solid var(--accent-emerald);
+                padding: 12px 24px;
+                border-radius: 20px;
+                background-color: var(--accent-dark);
+                text-decoration: none;
+                color: var(--text-primary);
+                box-shadow: 0 0 16px rgba(57, 231, 95, 0.5);
+                transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+            }
+
+            .icon {
+                width: 20px;
+                height: 20px;
+                background-color: currentColor;
+                mask-size: contain;
+            }
+
+            .icon-bz {
+                mask-image: url("/images/bazaar.svg");
+            }
+
+            .icon-ah {
+                mask-image: url(/images/auction-house.svg);
+            }
+
+            .icon-flips {
+                mask-image: url(/images/flips.svg);
+            }
+
+            .icon-ana {
+                mask-image: url(/images/analytics.svg);
+            }
+
+            .icon-items {
+                mask-image: url(/images/items.svg);
+            }
+
+            a {
+                color: var(--text);
+                text-decoration: none;
+            }
+
+            a:hover {
+                text-decoration: underline;
+                color: var(--bg);
+            }
+
+            .page-title {
+                text-align: center;
+                padding: 40px 16px 32px;
+            }
+
+            .page-title h1 {
+                margin: 0;
+                font-family: "Montserrat", sans-serif;
+                font-weight: 700;
+                font-size: clamp(2.5rem, 8vw, 5rem);
+                letter-spacing: 0.2em;
+                text-transform: uppercase;
+                background: linear-gradient(180deg, #ffffff 0%, #a7b0aa 100%);
+                background-clip: text;
+                color: transparent;
+                pointer-events: none;
+            }
+        </style>
+    </head>
+    <body>
+        <header class="topbar">
+            <a href="/" class="brand">
+                <img src="/images/VLogo.png" alt="Vault home">
+            </a>
+            <nav>
+                <a href="/bazaar">
+                    <span class="icon icon-bz"></span>
+                    Bazaar
+                </a>
+                <a href="#">
+                    <span class="icon icon-ah"></span>
+                    Auction House
+                </a>
+                <a href="#">
+                    <span class="icon icon-flips"></span>
+                    Flips
+                </a>
+                <a href="#">
+                    <span class="icon icon-ana"></span>
+                    Analytics
+                </a>
+                <a href="/items">
+                    <span class="icon icon-items"></span>
+                    Items
+                </a>
+            </nav>
+            <a href="#">Discord</a>
+        </header>
+        <header class="page-title">
+            <h1>Bazaar</h1>
+        </header>
+    </body>
+</html>
