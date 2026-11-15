@@ -12,35 +12,23 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
         <style>
-            /* Main colours: navy, alabaster, grey. Green and brown are only small accents. */
+            /* Same palette as dashboard.html: near-black greens with an emerald accent. */
             :root {
-                --bg: #052F5F;
-                --header-bg: #7C7C7C;
-                --header-text: #ffffff;
-                --text: #E7E7E7;
-                --muted: #7C7C7C;
-                /* Grey at 35% so row lines stay subtle. */
-                --border: rgba(124, 124, 124, 0.35);
-                --hover: rgba(231, 231, 231, 0.08);
-                --accent: #E7E7E7;
-                --side-green: #053B06;
-                --side-brown: #4C230A;
-                --profit: #05F140;
-                --loss: #F40000;
-            }
+                --bg-primary: #080B0A;
+                --bg-card: #050706;
+                --bg-secondary: #101513;
 
-            @media (prefers-color-scheme: light) {
-                :root {
-                    --bg: #E7E7E7;
-                    --header-bg: #5c5c5c;
-                    --text: #052F5F;
-                    /* Darker than #7C7C7C so muted text stays readable on alabaster. */
-                    --muted: #5c5c5c;
-                    --hover: #ffffff;
-                    --accent: #053B06;
-                    /* Electric green is unreadable on light backgrounds. */
-                    --profit: #048a2a;
-                }
+                --accent-green: #0d4210;
+                --accent-emerald: #32E65B;
+                --accent-dark: #0D2415;
+
+                --text-primary: #F5F7F5;
+                --text-secondary: #A7B0AA;
+
+                --border-color: #252C28;
+
+                --coin-gold: #FFC83D;
+                --profit-green: #35E58C;
             }
 
             html {
@@ -50,8 +38,8 @@
             /* Full-height column layout: the table area fills what's left and scrolls on its own. */
             body {
                 font-family: "Inter", sans-serif;
-                background-color: var(--bg);
-                color: var(--text);
+                background-color: var(--bg-primary);
+                color: var(--text-primary);
                 margin: 0;
                 padding: 20px;
                 height: 100vh;
@@ -66,9 +54,9 @@
 
             #search {
                 font: inherit;
-                color: var(--text);
-                background-color: var(--hover);
-                border: 1px solid var(--border);
+                color: var(--text-primary);
+                background-color: var(--bg-secondary);
+                border: 1px solid var(--border-color);
                 border-radius: 6px;
                 padding: 8px 12px 8px 34px;
                 width: 100%;
@@ -76,12 +64,12 @@
             }
 
             #search::placeholder {
-                color: var(--muted);
+                color: var(--text-secondary);
             }
 
             #search:focus {
                 outline: none;
-                border-color: var(--accent);
+                border-color: var(--accent-emerald);
             }
 
             #search:focus::placeholder {
@@ -99,12 +87,12 @@
                 left: 10px;
                 top: 50%;
                 transform: translateY(-50%);
-                color: var(--muted);
+                color: var(--text-secondary);
                 transition: color 0.15s ease;
             }
 
             .search-box:focus-within svg {
-                color: var(--accent);
+                color: var(--accent-emerald);
             }
 
             /* Scrolls in both directions, so narrow windows don't push the table off-screen. */
@@ -113,7 +101,7 @@
                 min-height: 0;
                 overflow: auto;
                 scrollbar-width: thin;
-                scrollbar-color: var(--muted) transparent;
+                scrollbar-color: var(--text-secondary) transparent;
             }
 
             table {
@@ -123,7 +111,7 @@
 
             th, td {
                 padding: 8px 12px;
-                border-bottom: 1px solid var(--border);
+                border-bottom: 1px solid var(--border-color);
                 text-align: right;
                 white-space: nowrap;
             }
@@ -135,13 +123,13 @@
 
             /* Sticky cells need their own background, or scrolled rows show through. */
             th {
-                background-color: var(--header-bg);
-                color: var(--text);
+                background-color: var(--bg-secondary);
+                color: var(--text-primary);
                 font-size: 0.8rem;
                 font-weight: 600;
                 text-transform: uppercase;
                 letter-spacing: 0.05em;
-                border-bottom: 2px solid var(--header-text);
+                border-bottom: 2px solid var(--border-color);
                 cursor: pointer;
                 position: sticky;
                 top: 0;
@@ -161,7 +149,7 @@
             }
 
             tbody tr:hover {
-                background-color: var(--hover);
+                background-color: var(--bg-secondary);
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
                 transform: translateY(-2px);
             }
@@ -171,7 +159,7 @@
             }
 
             a {
-                color: var(--accent);
+                color: var(--accent-emerald);
                 text-decoration: none;
             }
 
