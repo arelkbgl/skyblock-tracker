@@ -128,7 +128,68 @@
 
             .hero-logo {
                 width: 400px;
-                max-width: 90%;           
+                max-width: 90%;
+            }
+
+            /* V emblem with a glowing line on each side. */
+            .emblem-row {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .emblem-row::before,
+            .emblem-row::after {
+                content: "";
+                width: 140px;
+                height: 2px;
+                background: linear-gradient(90deg, transparent, var(--accent-emerald));
+                box-shadow: 0 0 8px rgba(50, 230, 91, 0.6);
+            }
+
+            /* Mirror the right line so it fades outward too. */
+            .emblem-row::after {
+                transform: scaleX(-1);
+            }
+
+            .emblem {
+                width: 110px;
+                filter: drop-shadow(0 0 14px rgba(50, 230, 91, 0.55));
+            }
+
+            /* Big silver "VAULT". skewX slants it without needing an italic font file. */
+            .brand-name {
+                margin: -6px -0.06em 0 0;    /* right margin cancels the extra space after the last letter */
+                font-family: "Montserrat", sans-serif;
+                font-weight: 900;
+                font-size: clamp(3rem, 10vw, 6.5rem);
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+                transform: skewX(-8deg);
+                background: linear-gradient(180deg, #fff 0%, #e3e8ec 45%, #9aa3ab 50%, #c9d0d6 75%, #fff 100%);
+                background-clip: text;
+                color: transparent;
+                filter: drop-shadow(0 3px 0 #000);
+            }
+
+            .brand-sub {
+                margin: 6px -0.5em 0 0;
+                font-family: "Montserrat", sans-serif;
+                font-weight: 600;
+                font-size: 0.8rem;
+                letter-spacing: 0.5em;
+                text-transform: uppercase;
+            }
+
+            .brand-tagline {
+                margin: 14px 0 0;
+                font-family: "Montserrat", sans-serif;
+                font-weight: 800;
+                font-size: 1.6rem;
+            }
+
+            .brand-tagline span {
+                color: var(--accent-emerald);
             }
 
             .search-box {
@@ -356,7 +417,12 @@
             <a href="#">Discord</a>
         </header>
         <section class ="hero">
-            <img class="hero-logo" src="/images/logoplaceholder.jpg" alt="">
+            <div class="emblem-row">
+                <img class="emblem" src="/images/v-emblem.svg" alt="">
+            </div>
+            <h1 class="brand-name">Vault</h1>
+            <p class="brand-sub">Hypixel SkyBlock Market Intelligence</p>
+            <p class="brand-tagline">Track. Trade. <span>Profit.</span></p>
             <label class="search-box" for="search">
                 <img src="/images/search.svg" alt="">
                 <input id="search" type="text" placeholder="Search for an item...">
