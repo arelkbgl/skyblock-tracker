@@ -1,0 +1,124 @@
+/* Full-height column layout: the table area fills what's left and scrolls on its own. */
+body {
+    background-color: var(--bg-primary);
+    padding: 20px;
+    height: 100vh;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+h1 {
+    margin: 0 0 16px;
+}
+
+#search {
+    font: inherit;
+    color: var(--text-primary);
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 8px 12px 8px 34px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#search::placeholder {
+    color: var(--text-secondary);
+}
+
+#search:focus {
+    outline: none;
+    border-color: var(--accent-emerald);
+}
+
+#search:focus::placeholder {
+    color: transparent;
+}
+
+.search-box {
+    max-width: 320px;
+    margin-bottom: 16px;
+    position: relative;
+}
+
+.search-box svg {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    transition: color 0.15s ease;
+}
+
+.search-box:focus-within svg {
+    color: var(--accent-emerald);
+}
+
+/* Scrolls in both directions, so narrow windows don't push the table off-screen. */
+.table-wrap {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--text-secondary) transparent;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border-color);
+    text-align: right;
+    white-space: nowrap;
+}
+
+/* Equal-width digits so numbers line up in their columns. */
+td {
+    font-variant-numeric: tabular-nums;
+}
+
+/* Sticky cells need their own background, or scrolled rows show through. */
+th {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid var(--border-color);
+    cursor: pointer;
+    position: sticky;
+    top: 0;
+}
+
+/* Item names are text, so align them left; all other columns are numbers. */
+th:first-child, td:first-child {
+    text-align: left;
+}
+
+th.sort-desc::after {
+    content: " ▼";
+}
+
+th.sort-asc::after {
+    content: " ▲";
+}
+
+tbody tr:hover {
+    background-color: var(--bg-secondary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    transform: translateY(-2px);
+}
+
+tbody tr {
+    transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+a {
+    color: var(--accent-emerald);
+    text-decoration: none;
+}
