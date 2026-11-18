@@ -14,6 +14,13 @@
 
     --coin-gold: #FFC83D;
     --profit-green: #35E58C;
+
+    --bg-featured: #262827;
+}
+
+/* Width and height include padding and border, so sizes are what you set. */
+*, *::before, *::after {
+    box-sizing: border-box;
 }
 
 html {

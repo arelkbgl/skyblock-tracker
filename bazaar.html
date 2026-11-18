@@ -1,150 +1,15 @@
 <!DOCTYPE html>
 <html>
-    <meta charset="UTF-8">
-    <title>Bazaar</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300..900&display=swap" rel="stylesheet">
     <head>
-        <style>
-            :root {
-                --bg-primary: #080B0A;
-                --bg-card: #050706;
-                --bg-secondary: #101513;
-
-                --accent-green: #0d4210;
-                --accent-emerald: #32E65B;
-                --accent-dark: #0D2415;
-
-                --text-primary: #F5F7F5;
-                --text-secondary: #A7B0AA;
-
-                --border-color: #252C28;
-
-                --coin-gold: #FFC83D;
-                --profit-green: #35E58C;
-            }
-
-            html {
-                font-size: 130%;
-            }
-
-            body {
-                font-family: "Inter", sans-serif;
-                background-color: var(--bg-secondary);
-                color: var(--text-primary);
-                margin: 0;
-            }
-
-            .topbar {
-                position: sticky;
-                top: 0;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                border-bottom: 1px solid var(--border-color);
-                padding: 4px 12px;
-                background-color: var(--bg-primary);
-                font-family: "Montserrat", sans-serif;
-                font-weight: 500;
-                font-size: 0.8rem;
-                color: var(--text-secondary);
-            }
-
-            .brand img {
-                height: 60px;
-                display: block;
-                margin-top: 8px;
-                margin-left: 12px;
-            }
-
-            nav {
-                display: flex;
-                gap: 80px;
-            }
-
-            nav a {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                border: 1px solid transparent;
-                padding: 12px 24px;
-                border-radius: 20px;
-                transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
-            }
-
-            nav img {
-                width: 20px;
-                height: 20px;
-            }
-
-            nav a:hover {
-                border: 1px solid var(--accent-emerald);
-                padding: 12px 24px;
-                border-radius: 20px;
-                background-color: var(--accent-dark);
-                text-decoration: none;
-                color: var(--text-primary);
-                box-shadow: 0 0 16px rgba(57, 231, 95, 0.5);
-                transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
-            }
-
-            .icon {
-                width: 20px;
-                height: 20px;
-                background-color: currentColor;
-                mask-size: contain;
-            }
-
-            .icon-bz {
-                mask-image: url("/images/bazaar.svg");
-            }
-
-            .icon-ah {
-                mask-image: url(/images/auction-house.svg);
-            }
-
-            .icon-flips {
-                mask-image: url(/images/flips.svg);
-            }
-
-            .icon-ana {
-                mask-image: url(/images/analytics.svg);
-            }
-
-            .icon-items {
-                mask-image: url(/images/items.svg);
-            }
-
-            a {
-                color: var(--text);
-                text-decoration: none;
-            }
-
-            a:hover {
-                text-decoration: underline;
-                color: var(--bg);
-            }
-
-            .page-title {
-                text-align: center;
-                padding: 40px 16px 32px;
-            }
-
-            .page-title h1 {
-                margin: 0;
-                font-family: "Montserrat", sans-serif;
-                font-weight: 700;
-                font-size: clamp(2.5rem, 8vw, 5rem);
-                letter-spacing: 0.2em;
-                text-transform: uppercase;
-                background: linear-gradient(180deg, #ffffff 0%, #a7b0aa 100%);
-                background-clip: text;
-                color: transparent;
-                pointer-events: none;
-            }
-        </style>
+        <meta charset="UTF-8">
+        <title>Bazaar</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300..900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="/css/base.css">
+        <link rel="stylesheet" href="/css/bazaar.css">
     </head>
     <body>
         <header class="topbar">
@@ -175,8 +40,47 @@
             </nav>
             <a href="#">Discord</a>
         </header>
-        <header class="page-title">
-            <h1>Bazaar</h1>
-        </header>
+        <h1 class="page-title">Bazaar</h1>
+        <section class="category">
+            <div class="category-header">
+                <h2>Best Bazaar Flips</h2>
+                <span class="updated">Updated 2 min ago</span>
+            </div>
+
+            <div class="category-body">
+                <!-- Left: the #1 item -->
+                <div class="featured">
+                    <p class="featured-label">#1 Suggestion</p>
+                    <h3 class="featured-name">Enchanted Diamond</h3>
+                    <div class="featured-chart">
+                        <canvas id="featured-chart"></canvas>
+                    </div>
+                    <div class="featured-stats">
+                        <div><span class="stat-label">Buy order</span> 1.2k</div>
+                        <div><span class="stat-label">Sell offer</span> 1.4k</div>
+                        <div><span class="stat-label">Profit / item</span> <span class="profit">+200 (16%)</span></div>
+                        <div><span class="stat-label">Weekly volume</span> 8.1M</div>
+                    </div>
+                </div>
+
+                <!-- Right: #2 to #5 -->
+                <table class="category-table">
+                    <thead>
+                        <tr>
+                            <th>#</th><th>Item</th><th>Buy</th><th>Sell</th><th>Profit</th><th>Volume</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>2</td><td>Booster Cookie</td><td>2.9M</td><td>3.2M</td><td class="profit">+10%</td><td>140k</td></tr>
+                        <tr><td>2</td><td>Booster Cookie</td><td>2.9M</td><td>3.2M</td><td class="profit">+10%</td><td>140k</td></tr>
+                        <tr><td>2</td><td>Booster Cookie</td><td>2.9M</td><td>3.2M</td><td class="profit">+10%</td><td>140k</td></tr>
+                        <tr><td>2</td><td>Booster Cookie</td><td>2.9M</td><td>3.2M</td><td class="profit">+10%</td><td>140k</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+        <script src="/js/bazaar.js"></script>
+        </body>
     </body>
 </html>
