@@ -72,6 +72,28 @@ const server = http.createServer((request, response) => {
             response.writeHead(200, { "Content-Type": type });
             response.end(image);
         }
+    } else if (url.pathname.startsWith("/css/")) {
+        const fileName = path.basename(url.pathname);
+
+        if (path.extname(fileName) !== ".css" || !fs.existsSync("css/" + fileName)) {
+            response.writeHead(404, {"Content-Type": "text/plain"});
+            response.end("CSS file not found");
+        } else {
+            const css = fs.readFileSync("css/" + fileName);
+            response.writeHead(200, {"Content-Type": "text/css"});
+            response.end(css);
+        }
+    } else if (url.pathname.startsWith("/js/")) {
+        const fileName = path.basename(url.pathname);
+
+        if (path.extname(fileName) !== ".js" || !fs.existsSync("js/" + fileName)) {
+            response.writeHead(404, {"Content-Type": "text/plain"});
+            response.end("JS file not found");
+        } else {
+            const js = fs.readFileSync("js/" + fileName);
+            response.writeHead(200, {"Content-Type": "text/javascript"});
+            response.end(js);
+        }
     } else {
         response.writeHead(404, { "Content-Type": "text/plain" });
         response.end("Page not found");
