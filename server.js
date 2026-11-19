@@ -54,8 +54,8 @@ const server = http.createServer((request, response) => {
         response.writeHead(200, { "Content-Type": "text/html" });
         response.end(html);
 
-    } else if (url.pathname === "/bazaar") {
-        const html = fs.readFileSync("bazaar.html");
+    } else if (url.pathname === "/flips") {
+        const html = fs.readFileSync("flips.html");
         response.writeHead(200, { "Content-Type": "text/html" });
         response.end(html);
 
