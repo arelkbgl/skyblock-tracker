@@ -2,7 +2,7 @@
 //
 // Routes:
 //   GET /                    Dashboard (dashboard.html)
-//   GET /bazaar              Bazaar Overview (bazaar.html)
+//   GET /flips               Flips (flips.html)
 //   GET /items               Item Overview (items.html)
 //   GET /images/<file>       Image files from the images/ folder
 //   GET /chart?item=<id>     Price chart page (chart.html)
