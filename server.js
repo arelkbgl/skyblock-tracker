@@ -3,6 +3,7 @@
 // Routes:
 //   GET /                    Dashboard (dashboard.html)
 //   GET /flips               Flips (flips.html)
+//   GET /api/items           Latest snapshot of every item as JSON
 //   GET /items               Item Overview (items.html)
 //   GET /images/<file>       Image files from the images/ folder
 //   GET /chart?item=<id>     Price chart page (chart.html)
@@ -17,6 +18,7 @@ const path = require("path");
 
 const db = new DatabaseSync("prices.db");
 const selectHistory = db.prepare("SELECT time, buy, sell FROM prices WHERE item = ? ORDER BY time");
+const selectLatest = db.prepare("SELECT * FROM latest");
 
 // File extension → Content-Type, so the browser knows how to read each image.
 const imageTypes = {
@@ -44,18 +46,27 @@ const server = http.createServer((request, response) => {
         response.writeHead(200, { "Content-Type": "application/json" });
         response.end(JSON.stringify(history));
 
+    } else if (url.pathname ==="/api/items"){
+        const items = selectLatest.all();
+
+        response.writeHead(200, { "Content-Type": "application/json" });
+        response.end(JSON.stringify(items));
+
     } else if (url.pathname === "/chart") {
         const html = fs.readFileSync("chart.html");
+
         response.writeHead(200, { "Content-Type": "text/html" });
         response.end(html);
     
     } else if (url.pathname === "/items") {
         const html = fs.readFileSync("items.html");
+
         response.writeHead(200, { "Content-Type": "text/html" });
         response.end(html);
 
     } else if (url.pathname === "/flips") {
         const html = fs.readFileSync("flips.html");
+
         response.writeHead(200, { "Content-Type": "text/html" });
         response.end(html);
 
