@@ -8,8 +8,22 @@ const { DatabaseSync } = require("node:sqlite");
 const db = new DatabaseSync("prices.db");
 db.exec("CREATE TABLE IF NOT EXISTS prices (time TEXT, item TEXT, buy REAL, sell REAL)");
 db.exec("CREATE INDEX IF NOT EXISTS idx_item_time ON prices (item, time)");
+db.exec(`CREATE TABLE IF NOT EXISTS latest (
+    item TEXT PRIMARY KEY,
+    time TEXT,
+    orderPrice REAL,
+    offerPrice REAL,
+    buyMovingWeek INTEGER,
+    sellMovingWeek INTEGER,
+    buyOrders INTEGER,
+    sellOrders INTEGER
+)`);
 
 const insert = db.prepare("INSERT INTO prices (time, item, buy, sell) VALUES (?, ?, ?, ?)");
+const upsertLatest = db.prepare(`INSERT OR REPLACE INTO latest
+    (item, time, orderPrice, offerPrice, buyMovingWeek, sellMovingWeek, buyOrders, sellOrders)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`);
+const deleteStale = db.prepare("DELETE FROM latest WHERE time != ?");
 
 async function collect() {
     try {
@@ -21,6 +35,7 @@ async function collect() {
         const items = Object.keys(data.products);
         let count = 0;
 
+        db.exec("BEGIN");
         for (const itemId of items) {
             const product = data.products[itemId];
 
@@ -32,12 +47,25 @@ async function collect() {
             if (buyPrice !== 0 && sellPrice !== 0) {
                 insert.run(time, itemId, buyPrice, sellPrice);
                 count++;
+
+                const status = product.quick_status;
+                upsertLatest.run(
+                    itemId, time,
+                    sellPrice,   // orderPrice: the low price, where buy orders sit
+                    buyPrice,    // offerPrice: the high price, where sell offers sit
+                    status.buyMovingWeek, status.sellMovingWeek,
+                    status.buyOrders, status.sellOrders
+                );
             }
         }
+        deleteStale.run(time);
+        db.exec("COMMIT");
 
         console.log("Saved " + count + " items at " + time);
     } catch (error) {
-        // Log and skip this round so a network or API failure doesn't stop the collector.
+        if (db.isTransaction) {
+            db.exec("ROLLBACK");
+        }
         console.error("Collect failed at " + new Date().toISOString() + ": " + error.message);
     }
 }
