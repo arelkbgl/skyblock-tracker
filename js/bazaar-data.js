@@ -19,17 +19,17 @@ async function fetchItems() {
             id: row.item,
             name: prettyName(row.item),
             time: row.time,
-            orderPrice: shortNumber(row.orderPrice),
-            offerPrice: shortNumber(row.offerPrice),
-            buyMovingWeek: shortNumber(row.buyMovingWeek),
-            sellMovingWeek: shortNumber(row.sellMovingWeek),
-            buyOrders: shortNumber(row.buyOrders),
-            sellOrders: shortNumber(row.sellOrders),
-            itemsPerHour: shortNumber(itemsPerHour),
-            margin: shortNumber(margin),
-            marginPercent: shortNumber(marginPercent),
-            marginAfterTax: shortNumber(marginAfterTax),
-            profitPerHour: shortNumber(profitPerHour),
+            orderPrice: row.orderPrice,
+            offerPrice: row.offerPrice,
+            buyMovingWeek: row.buyMovingWeek,
+            sellMovingWeek: row.sellMovingWeek,
+            buyOrders: row.buyOrders,
+            sellOrders: row.sellOrders,
+            itemsPerHour: itemsPerHour,
+            margin: margin,
+            marginPercent: marginPercent,
+            marginAfterTax: marginAfterTax,
+            profitPerHour: profitPerHour,
         };
         items.push(item); 
     }
@@ -60,4 +60,15 @@ function shortNumber(n) {
     } else {
         return n.toFixed(1);
     }
+}
+
+function timeAgo(time) {
+    const date = new Date(time);
+    const diff = Date.now() - date.getTime();
+    const minutes = Math.floor(diff / 60000);
+
+    if (minutes === 0) {
+    return "just now";
+    }
+    return minutes + " min ago";
 }
