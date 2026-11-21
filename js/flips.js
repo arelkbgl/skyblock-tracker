@@ -13,6 +13,11 @@ async function drawMiniChart(canvas, itemId) {
         sellPrices.push(entry.sell);
     }
 
+    const old = Chart.getChart(canvas);
+    if (old) {
+        old.destroy();
+    }
+
     new Chart(canvas, {
         type: "line",
         data: {
@@ -50,6 +55,7 @@ function fillCategory(section, top, getStats) {
     drawMiniChart(section.querySelector("canvas"), top[0].id);
 
     const tbody = section.querySelector(".category-table tbody");
+    tbody.innerHTML = "";
 
     for (let i = 1; i < top.length; i++) {
         const stats = getStats(top[i]);
@@ -146,7 +152,28 @@ async function loadPage() {
     fillCategory(document.querySelector("#best-flips"), bestBazaarFlips(items), flipStats);
     fillCategory(document.querySelector("#budget-flips"), budgetFlips(items), flipStats);
     // Insta version: npcFlips(items, true) with npcStatsInsta
-    fillCategory(document.querySelector("#npc-flips"), npcFlips(items, false), npcStats);
+    fillCategory(document.querySelector("#npc-flips"), npcFlips(items, true), npcStatsInsta);
+
+    const npcSection = document.querySelector("#npc-flips");
+    const buttons = npcSection.querySelectorAll("button");
+    const active = npcSection.querySelector("#active");
+
+    for (const button of buttons) {
+        button.addEventListener("click", () => {
+            for (const b of buttons) {
+                b.classList.remove("active");
+            }
+            button.classList.add("active");
+
+            if (button.dataset.mode === "insta") {
+                fillCategory(document.querySelector("#npc-flips"), npcFlips(items,true), npcStatsInsta);
+            } 
+            
+            if (button.dataset.mode === "order") {
+                fillCategory(document.querySelector("#npc-flips"), npcFlips(items,false), npcStats);
+            }
+        });
+    }
 }
 
 loadPage();

@@ -40,7 +40,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 3px solid var(--border-color);
     padding: 4px 12px;
     background-color: var(--bg-primary);
     font-family: "Montserrat", sans-serif;
@@ -65,7 +65,7 @@ nav a {
     display: flex;
     align-items: center;
     gap: 8px;
-    border: 1px solid transparent;
+    border: 3px solid transparent;
     padding: 12px 24px;
     border-radius: 20px;
     transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
@@ -76,8 +76,9 @@ nav img {
     height: 20px;
 }
 
-nav a:hover {
-    border: 1px solid var(--accent-emerald);
+nav a:hover,
+nav a.active {
+    border: 3px solid var(--accent-emerald);
     padding: 12px 24px;
     border-radius: 20px;
     background-color: var(--accent-dark);
