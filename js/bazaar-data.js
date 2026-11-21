@@ -14,7 +14,22 @@ async function fetchItems() {
         const marginAfterTax = row.offerPrice * (1 - TAX) - row.orderPrice;
         const itemsPerHour = Math.min(row.buyMovingWeek, row.sellMovingWeek) / 168;
         const profitPerHour = marginAfterTax * itemsPerHour;
-        
+
+        let npcProfit = null;
+        let npcProfitInsta = null;
+        let npcProfitPercent = null;
+        let npcProfitInstaPercent = null;
+        let npcProfitPerHour = null;
+        let npcProfitInstaPerHour = null;
+        if (row.npcPrice !== null) {
+            npcProfit = row.npcPrice - row.orderPrice;
+            npcProfitInsta = row.npcPrice - row.offerPrice;
+            npcProfitPercent = npcProfit / row.orderPrice * 100;
+            npcProfitInstaPercent = npcProfitInsta / row.offerPrice * 100;
+            // Buy orders get filled by insta-sellers (sellMovingWeek); insta-buys use buyMovingWeek.
+            npcProfitPerHour = npcProfit * row.sellMovingWeek / 168;
+            npcProfitInstaPerHour = npcProfitInsta * row.buyMovingWeek / 168;
+        }
         const item = {
             id: row.item,
             name: prettyName(row.item),
@@ -30,6 +45,13 @@ async function fetchItems() {
             marginPercent: marginPercent,
             marginAfterTax: marginAfterTax,
             profitPerHour: profitPerHour,
+            npcPrice: row.npcPrice,
+            npcProfit,
+            npcProfitInsta,
+            npcProfitPercent,
+            npcProfitInstaPercent,
+            npcProfitPerHour,
+            npcProfitInstaPerHour
         };
         items.push(item); 
     }

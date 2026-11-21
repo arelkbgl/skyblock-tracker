@@ -18,7 +18,7 @@ const path = require("path");
 
 const db = new DatabaseSync("prices.db");
 const selectHistory = db.prepare("SELECT time, buy, sell FROM prices WHERE item = ? ORDER BY time");
-const selectLatest = db.prepare("SELECT * FROM latest");
+const selectLatest = db.prepare("SELECT latest.*, npc_prices.npcPrice FROM latest LEFT JOIN npc_prices ON latest.item = npc_prices.item");
 
 // File extension → Content-Type, so the browser knows how to read each image.
 const imageTypes = {

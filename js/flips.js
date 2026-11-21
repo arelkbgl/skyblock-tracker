@@ -37,30 +37,31 @@ async function drawMiniChart(canvas, itemId) {
     });
 }
 
-function fillCategory(section, top) {
+function fillCategory(section, top, getStats) {
+    const statsFeatured = getStats(top[0]);
 
     section.querySelector(".updated").textContent = "Updated " + timeAgo(top[0].time);
-    section.querySelector(".featured-name").textContent = top[0].name;
-    section.querySelector(".stat-buy").textContent = shortNumber(top[0].orderPrice);
-    section.querySelector(".stat-sell").textContent = shortNumber(top[0].offerPrice);
-    section.querySelector(".stat-profit").textContent = "+" + shortNumber(top[0].marginAfterTax) + " (" + Math.round(top[0].marginPercent) + "%)";
-    section.querySelector(".stat-volume").textContent = shortNumber(top[0].itemsPerHour * 168);
+    section.querySelector(".featured-name").textContent = statsFeatured.name;
+    section.querySelector(".stat-buy").textContent = shortNumber(statsFeatured.buy);
+    section.querySelector(".stat-sell").textContent = shortNumber(statsFeatured.sell);
+    section.querySelector(".stat-profit").textContent = "+" + shortNumber(statsFeatured.margin) + " (" + Math.round(statsFeatured.marginPercent) + "%)";
+    section.querySelector(".stat-volume").textContent = shortNumber(statsFeatured.volume);
 
     drawMiniChart(section.querySelector("canvas"), top[0].id);
 
     const tbody = section.querySelector(".category-table tbody");
 
     for (let i = 1; i < top.length; i++) {
+        const stats = getStats(top[i]);
         const row = document.createElement("tr");
-        const item = top[i];
 
         row.innerHTML = `
         <td>${i + 1}</td>
-        <td>${item.name}</td>
-        <td>${shortNumber(item.orderPrice)}</td>
-        <td>${shortNumber(item.offerPrice)}</td>
-        <td class="profit">${shortNumber(item.marginAfterTax)}</td>
-        <td>${shortNumber(item.itemsPerHour * 168)}</td>`;
+        <td>${stats.name}</td>
+        <td>${shortNumber(stats.buy)}</td>
+        <td>${shortNumber(stats.sell)}</td>
+        <td class="profit">${shortNumber(stats.margin)}</td>
+        <td>${shortNumber(stats.volume)}</td>`;
         
         tbody.append(row);
     }
@@ -85,11 +86,67 @@ function budgetFlips(list) {
     return top5;
 }
 
+function flipStats(item) {
+    return {
+        name: item.name,
+        buy: item.orderPrice,
+        sell: item.offerPrice,
+        margin: item.marginAfterTax,
+        marginPercent: item.marginPercent,
+        volume: item.itemsPerHour * 168
+    };
+}
+
+// insta = false: buy order → NPC (cheaper, but you wait for the order to fill)
+// insta = true:  insta-buy → NPC (instant, smaller profit)
+function npcFlips(list, insta) {
+    let profitField = "npcProfit";
+    let perHourField = "npcProfitPerHour";
+    let volumeField = "sellMovingWeek";
+    if (insta) {
+        profitField = "npcProfitInsta";
+        perHourField = "npcProfitInstaPerHour";
+        volumeField = "buyMovingWeek";
+    }
+
+    // null > 0 is false, so items without an NPC price drop out here.
+    const good = list.filter(item => item[profitField] > 0
+        && item[volumeField] >= 1000)
+        .sort((a,b) => b[perHourField] - a[perHourField]);
+
+    const top5 = good.slice(0,5);
+    return top5;
+}
+
+function npcStats(item) {
+    return {
+        name: item.name,
+        buy: item.orderPrice,
+        sell: item.npcPrice,
+        margin: item.npcProfit,
+        marginPercent: item.npcProfitPercent,
+        volume: item.sellMovingWeek
+    };
+}
+
+function npcStatsInsta(item) {
+    return {
+        name: item.name,
+        buy: item.offerPrice,
+        sell: item.npcPrice,
+        margin: item.npcProfitInsta,
+        marginPercent: item.npcProfitInstaPercent,
+        volume: item.buyMovingWeek
+    };
+}
+
 async function loadPage() {
     const items = await fetchItems();
 
-    fillCategory(document.querySelector("#best-flips"), bestBazaarFlips(items));
-    fillCategory(document.querySelector("#budget-flips"), budgetFlips(items));
+    fillCategory(document.querySelector("#best-flips"), bestBazaarFlips(items), flipStats);
+    fillCategory(document.querySelector("#budget-flips"), budgetFlips(items), flipStats);
+    // Insta version: npcFlips(items, true) with npcStatsInsta
+    fillCategory(document.querySelector("#npc-flips"), npcFlips(items, false), npcStats);
 }
 
 loadPage();

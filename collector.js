@@ -18,12 +18,14 @@ db.exec(`CREATE TABLE IF NOT EXISTS latest (
     buyOrders INTEGER,
     sellOrders INTEGER
 )`);
+db.exec("CREATE TABLE IF NOT EXISTS npc_prices (item TEXT PRIMARY KEY, npcPrice REAL)");
 
 const insert = db.prepare("INSERT INTO prices (time, item, buy, sell) VALUES (?, ?, ?, ?)");
 const upsertLatest = db.prepare(`INSERT OR REPLACE INTO latest
     (item, time, orderPrice, offerPrice, buyMovingWeek, sellMovingWeek, buyOrders, sellOrders)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`);
 const deleteStale = db.prepare("DELETE FROM latest WHERE time != ?");
+const upsertNpc = db.prepare("INSERT OR REPLACE INTO npc_prices (item, npcPrice) VALUES (?, ?)");
 
 async function collect() {
     try {
@@ -62,6 +64,7 @@ async function collect() {
         db.exec("COMMIT");
 
         console.log("Saved " + count + " items at " + time);
+
     } catch (error) {
         if (db.isTransaction) {
             db.exec("ROLLBACK");
@@ -70,5 +73,37 @@ async function collect() {
     }
 }
 
+async function collectNpc() {
+    try {
+        const response = await fetch("https://api.hypixel.net/v2/resources/skyblock/items");
+        const data = await response.json();
+
+        let count = 0;
+
+        db.exec("BEGIN");
+        for (const item of data.items) {
+            if (item.npc_sell_price) {
+                count++;
+
+                upsertNpc.run(
+                    item.id,
+                    item.npc_sell_price
+                );
+            }
+        }
+        db.exec("COMMIT");
+
+        console.log("Saved " + count + " NPC prices");
+
+    } catch (error) {
+        if (db.isTransaction) {
+            db.exec("ROLLBACK");
+        }
+        console.error("NPC collect failed at " + new Date().toISOString() + ": " + error.message);
+    }
+}
+
 collect();
 setInterval(collect, 300_000);
+collectNpc();
+setInterval(collectNpc, 24 * 60 * 60 * 1000);
