@@ -68,7 +68,7 @@ function timeAgo(time) {
     const minutes = Math.floor(diff / 60000);
 
     if (minutes === 0) {
-    return "just now";
+        return "just now";
     }
     return minutes + " min ago";
 }
